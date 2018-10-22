@@ -76,3 +76,5 @@ plt.plot(t_to_plot, y_rk2[:, 0], label='Runge-Kutta 2')
 
 plt.legend()
 plt.show()
+
+plt.savefig('comparacion-pendulo.png')
