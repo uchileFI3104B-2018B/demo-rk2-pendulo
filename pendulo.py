@@ -4,6 +4,8 @@ Integra la ecuacion del pendulo usando Runge-Kutta de orden 2.
 
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.interpolate import interp1d
+from scipy.optimize import newton
 
 
 g = 9.8 # m/s/s
@@ -77,4 +79,24 @@ plt.plot(t_to_plot, y_rk2[:, 0], label='Runge-Kutta 2')
 plt.legend()
 plt.show()
 
-plt.savefig('comparacion-pendulo.png')
+# plt.savefig('comparacion-pendulo.png')
+
+phi_interpolant = interp1d(t_to_plot, y_rk2[:,0])
+t_packed = np.linspace(0.5, 2, 1000)
+
+primer_cero = newton(phi_interpolant, 0.5)
+segundo_cero = newton(phi_interpolant, 3)
+
+plt.figure(2)
+plt.clf()
+
+plt.plot(t_to_plot, y_rk2[:, 0], 'o')
+plt.plot(t_packed, phi_interpolant(t_packed), '.')
+plt.axvline(primer_cero)
+plt.axvline(segundo_cero)
+plt.axhline(0)
+
+plt.show()
+
+print("El periodo del pendulo es {:.2f} seg".format((segundo_cero - 
+                                                     primer_cero)))
